@@ -56,48 +56,6 @@ ComplaintSystemApi/
 └── package.json              # Project dependencies & scripts
 ```
 
----
-
-## 🛠️ Getting Started
-
-### Prerequisites
-*   **Node.js** (v14+ recommended)
-*   **MongoDB** (Local instance or MongoDB Atlas connection string)
-*   **npm** or **yarn**
-
-### Installation
-
-1.  **Clone the repository**
-    ```bash
-    git clone <repository-url>
-    cd ComplaintSystemApi
-    ```
-
-2.  **Install Dependencies**
-    ```bash
-    npm install
-    ```
-
-3.  **Configure Environment Variables**
-    Create a `.env` file in the root directory and add the following:
-    ```env
-    PORT=8800
-    MONGODB_URI=mongodb://localhost:27017/ComplaintSystem
-    JWT_SECRET=your_super_secret_key_here
-    ```
-
-4.  **Start the Server**
-    ```bash
-    # Standard start
-    npm start
-
-    # Development mode (with nodemon)
-    npm run dev
-    ```
-    The server will start on `http://localhost:8800`.
-
----
-
 ## 🔌 API Documentation
 
 All API responses are in JSON format.
