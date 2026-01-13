@@ -96,35 +96,6 @@ complaint-system-api/
 └── package.json
 ```
 
-## Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m 'Add some feature'`)
-4. Push to the branch (`git push origin feature/your-feature`)
-5. Open a Pull Request
-
-## Support
-
-For issues or questions, please [open an issue](https://github.com/your-username/complaint-system-api/issues).
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
-
-This README provides:
-
-1. Clear project overview with badges
-2. Feature highlights using emoji visuals
-3. Step-by-step installation guide
-4. Environment configuration instructions
-5. API endpoint reference table
-6. Project structure visualization
-7. Contribution guidelines
-8. Support information
-9. License details
-
-The document focuses on practical usage while maintaining a professional tone suitable for developers. It abstracts implementation details in favor of user-focused information about functionality and setup.
