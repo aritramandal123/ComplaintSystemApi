@@ -1,101 +1,301 @@
-```markdown
-# Complaint System API
+# 📋 Complaint System API
 
-![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
-![Express](https://img.shields.io/badge/Express-4.x-lightgrey)
-![MongoDB](https://img.shields.io/badge/MongoDB-7.x-green)
+> A robust, RESTful API backend for managing user complaints, designed with Node.js, Express, and MongoDB.
 
-A robust backend API for managing complaints and support tickets, featuring JWT authentication and MongoDB integration. Built with Node.js and Express, this system provides essential endpoints for creating, managing, and resolving customer complaints.
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 
-## Key Features
+## 📖 Overview
 
-🔒 **JWT Authentication** - Secure user authentication with JSON Web Tokens  
-🗄️ **MongoDB Storage** - Persistent data storage with Mongoose ODM  
-🔄 **CORS Support** - Cross-Origin Resource Sharing enabled  
-⚙️ **Environment Configuration** - Easy setup via `.env` file  
-📦 **Modular Architecture** - Clean separation of routes, controllers, and models  
-📡 **RESTful Endpoints** - Standard-compliant API structure
+The **Complaint System API** serves as the backend infrastructure for a complaint management platform. It facilitates secure user and admin authentication, complaint submission and tracking, and profile management. 
 
-## Prerequisites
+Key features include:
+*   **Role-Based Authentication**: Secure login for Users and Administrators using JWT (JSON Web Tokens).
+*   **Complaint Lifecycle**: Operations for submitting, updating (Admin only), and viewing complaints.
+*   **Data Persistence**: robust data modeling using Mongoose schemas for structured MongoDB storage.
+*   **Profile Management**: Endpoints to retrieve detailed profiles for specific user roles.
 
-- Node.js 18.x or higher
-- MongoDB Atlas account or local MongoDB instance
-- VS Code (recommended) or any code editor
+---
 
-## Installation
+## 🏗️ Architecture
 
-1. **Clone Repository**
-   ```bash
-   git clone https://github.com/your-username/complaint-system-api.git
-   cd complaint-system-api
-   ```
+### Tech Stack
+*   **Backend:** Node.js, Express.js
+*   **Database:** MongoDB (NoSQL)
+*   **Authentication:** JWT (JSON Web Tokens)
 
-2. **Install Dependencies**
-   ```bash
-   npm install
-   ```
+### System Components
+*   **Server:** RESTful API handling business logic and database interactions.
+*   **Security:** Middleware-based authentication and Role-Based Access Control (RBAC).
 
-3. **Configure Environment**
-   Create `.env` file in root directory:
-   ```env
-   PORT=3000
-   MONGODB_URI=mongodb://localhost:27017/complaint_system
-   JWT_SECRET=your_secure_secret_here
-   CORS_ORIGIN=http://localhost:4200
-   ```
-
-## Usage
-
-**Start Development Server**
-```bash
-npm run dev
+### File Structure
+```
+ComplaintSystemApi/
+├── config/
+│   └── db.js                 # MongoDB Connection setup
+├── controllers/
+│   ├── complaintsOperations.js # Logic for submitting/updating complaints
+│   ├── getInfo.js            # Logic for retrieving user/admin/employee info
+│   └── loginController.js    # Logic for authentication
+├── models/
+│   ├── adminCredSchema.js    # Schema for Admin Credentials
+│   ├── adminProfileSchema.js # Schema for Admin Profile details
+│   ├── complaintsSchema.js   # Schema for Complaint tickets
+│   ├── employeeSchema.js     # Schema for Technician/Employee details
+│   ├── userCredSchema.js     # Schema for User Credentials
+│   └── user_profileSchema.js # Schema for User Profile details
+├── router/
+│   ├── complaintsRouter.js   # Routes for complaint operations
+│   ├── getInfoRouter.js      # Routes for information retrieval
+│   └── loginRouter.js        # Routes for login
+├── data/                     # Data seeding files
+├── .env                      # Environment variables
+├── server.js                 # Application entry point
+└── package.json              # Project dependencies & scripts
 ```
 
-**Start Production Server**
-```bash
-npm start
-```
+---
 
-**Run Tests**
-```bash
-npm test
-```
+## 🛠️ Getting Started
 
-## API Endpoints
+### Prerequisites
+*   **Node.js** (v14+ recommended)
+*   **MongoDB** (Local instance or MongoDB Atlas connection string)
+*   **npm** or **yarn**
 
-| Method | Endpoint           | Description                | Authentication |
-|--------|--------------------|----------------------------|----------------|
-| POST   | /api/auth/register | Register new user          | Public         |
-| POST   | /api/auth/login    | User login                 | Public         |
-| POST   | /api/complaints    | Create new complaint       | JWT Required   |
-| GET    | /api/complaints    | Get all complaints         | JWT Required   |
-| GET    | /api/complaints/:id| Get single complaint       | JWT Required   |
-| PUT    | /api/complaints/:id| Update complaint           | JWT Required   |
-| DELETE | /api/complaints/:id| Delete complaint           | Admin Only     |
+### Installation
 
-## Configuration
+1.  **Clone the repository**
+    ```bash
+    git clone <repository-url>
+    cd ComplaintSystemApi
+    ```
 
-### Environment Variables
-- `PORT`: Server port (default: 3000)
-- `MONGODB_URI`: MongoDB connection string
-- `JWT_SECRET`: Secret for signing JWTs
-- `JWT_EXPIRES_IN`: Token expiration time (default: '1d')
-- `CORS_ORIGIN`: Allowed origins (comma-separated)
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
 
-### Project Structure
-```
-complaint-system-api/
-├── config/         # Configuration files
-├── controllers/    # Route controllers
-├── models/         # Mongoose models
-├── routes/         # Express routes
-├── middleware/     # Custom middleware
-├── utils/          # Helper functions
-├── .env.example    # Environment template
-├── server.js       # Entry point
-└── package.json
-```
+3.  **Configure Environment Variables**
+    Create a `.env` file in the root directory and add the following:
+    ```env
+    PORT=8800
+    MONGODB_URI=mongodb://localhost:27017/ComplaintSystem
+    JWT_SECRET=your_super_secret_key_here
+    ```
 
-## License
+4.  **Start the Server**
+    ```bash
+    # Standard start
+    npm start
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+    # Development mode (with nodemon)
+    npm run dev
+    ```
+    The server will start on `http://localhost:8800`.
+
+---
+
+## 🔌 API Documentation
+
+All API responses are in JSON format.
+**Base URL**: `http://localhost:8800`
+
+### 🔒 Authentication
+Authentication is handled via JWT. Upon successful login, you receive a `token`. This token must be included in the header of protected routes.
+
+**Header Format**: `Authorization: Bearer <your_token>`
+
+#### 1. User Login
+*   **Endpoint:** `/login/user`
+*   **Method:** `POST`
+*   **Description:** Authenticates a standard user.
+*   **Request Body:**
+    ```json
+    {
+        "email": "user@example.com",
+        "password": "password123"
+    }
+    ```
+*   **Success Response (200):**
+    ```json
+    {
+        "message": "Login successful",
+        "token": "eyJhbGciOiJIUzI1NiIsIn...",
+        "userId": "user_uuid_here"
+    }
+    ```
+*   **Error Response (401):**
+    ```json
+    { "message": "Invalid email or password" }
+    ```
+
+#### 2. Admin Login
+*   **Endpoint:** `/login/admin`
+*   **Method:** `POST`
+*   **Description:** Authenticates an administrator.
+*   **Request Body:**
+    ```json
+    {
+        "email": "admin@example.com",
+        "password": "adminpassword"
+    }
+    ```
+*   **Success Response (200):**
+    ```json
+    {
+        "message": "Login successful",
+        "token": "eyJhbGciOiJIUzI1NiIsIn...",
+        "userId": "admin_uuid_here"
+    }
+    ```
+
+---
+
+### 📝 Complaint Management
+
+#### 3. Submit Complaint (User)
+*   **Endpoint:** `/complaints/user/submit`
+*   **Method:** `POST`
+*   **Headers:** `Authorization: Bearer <token>`
+*   **Description:** Allows a logged-in user to submit a new complaint.
+*   **Request Body:**
+    ```json
+    {
+        "userId": "user_uuid_from_login",
+        "title": "Internet Down",
+        "category": "Network",
+        "description": "Unable to connect to Wi-Fi since morning."
+    }
+    ```
+*   **Success Response (200):**
+    ```json
+    {
+        "code": 200,
+        "message": "Complaint submitted successfully",
+        "complaint": {
+            "complaintId": "C-2026-1005",
+            "status": "pending",
+            "createdAt": "2026-01-13T10:00:00.000Z",
+            ...
+        }
+    }
+    ```
+
+#### 4. Update Complaint (Admin)
+*   **Endpoint:** `/complaints/admin/update`
+*   **Method:** `POST`
+*   **Headers:** `Authorization: Bearer <token>`
+*   **Description:** Allows an admin to update the status or details of a complaint.
+*   **Request Body:**
+    ```json
+    {
+        "id": "admin_uuid_from_login",
+        "complaint": {
+            "complaintId": "C-2026-1005",
+            "status": "resolved",
+            "technician": "John Doe"
+        }
+    }
+    ```
+*   **Success Response (200):**
+    ```json
+    {
+        "code": 200,
+        "message": "Complaint updated successfully",
+        "complaint": { ...updated_object }
+    }
+    ```
+
+---
+
+### ℹ️ Information Retrieval
+
+#### 5. Get User Info
+*   **Endpoint:** `/getInfo/userInfo`
+*   **Method:** `POST`
+*   **Headers:** `Authorization: Bearer <token>`
+*   **Request Body:**
+    ```json
+    { "id": "user_uuid" }
+    ```
+*   **Response:** Returns the user's profile details (Name, Phone, Joined Date, etc.).
+
+#### 6. Get Admin Info
+*   **Endpoint:** `/getInfo/adminInfo`
+*   **Method:** `POST`
+*   **Headers:** `Authorization: Bearer <token>`
+*   **Request Body:**
+    ```json
+    { "id": "admin_uuid" }
+    ```
+*   **Response:** Returns the admin's profile details (Name, Department, ID).
+
+#### 7. Get User Complaints
+*   **Endpoint:** `/getInfo/user/complaints`
+*   **Method:** `POST`
+*   **Headers:** `Authorization: Bearer <token>`
+*   **Description:** Fetches all complaints submitted by a specific user.
+*   **Request Body:**
+    ```json
+    {
+        "id": "user_uuid",
+        "userType": "users"
+    }
+    ```
+*   **Response:** JSON array of complaint objects.
+
+#### 8. Get All Complaints (Admin)
+*   **Endpoint:** `/getInfo/admin/complaints`
+*   **Method:** `POST`
+*   **Headers:** `Authorization: Bearer <token>`
+*   **Description:** Fetches ALL complaints in the system.
+*   **Request Body:**
+    ```json
+    { "id": "admin_uuid" }
+    ```
+*   **Response:** JSON array of all complaint objects.
+
+#### 9. Get All Employees (Admin)
+*   **Endpoint:** `/getInfo/admin/employees`
+*   **Method:** `POST`
+*   **Headers:** `Authorization: Bearer <token>`
+*   **Description:** Fetches a list of all technicians/employees.
+*   **Request Body:**
+    ```json
+    { "id": "admin_uuid" }
+    ```
+*   **Response:** JSON array of employee objects.
+
+---
+
+## 🗄️ Database Schemas
+
+### Users (`user_profiles`)
+*   `_id`: String (UUID)
+*   `full_name`: String
+*   `phone`: String
+*   `access`: Array of Complaint IDs [String]
+
+### Complaints (`complaints`)
+*   `complaintId`: String (Unique, e.g., "C-2026-1001")
+*   `userId`: String
+*   `title`: String
+*   `description`: String
+*   `status`: Enum [`pending`, `in-progress`, `resolved`, `closed`]
+*   `priority`: Enum [`low`, `medium`, `high`, `urgent`]
+*   `technician`: String (Default: "unassigned")
+
+---
+### Employees (`employees`)
+*   `_id`: String (UUID)
+*   `full_name`: String
+*   `email`: String
+*   `role`: Enum [`admin`, `technician`]
+*   `assigned_complaints`: Array of Complaint IDs [String]
+
+---
+
+
