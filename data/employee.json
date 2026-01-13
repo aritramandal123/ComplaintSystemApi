@@ -1,0 +1,74 @@
+{
+    "technician": [
+        {
+            "employeeId": "EMP-5501",
+            "fullName": "Jordan Smith",
+            "role": "Backend",
+            "seniority": "Mid",
+            "isRemote": false
+        },
+        {
+            "employeeId": "EMP-5502",
+            "fullName": "Elena Rodriguez",
+            "role": "Frontend",
+            "seniority": "Senior",
+            "isRemote": true
+        },
+        {
+            "employeeId": "EMP-5503",
+            "fullName": "Marcus Chen",
+            "role": "DevOps",
+            "seniority": "Junior",
+            "isRemote": false
+        },
+        {
+            "employeeId": "EMP-5504",
+            "fullName": "Sarah Jenkins",
+            "role": "Fullstack",
+            "seniority": "Mid",
+            "isRemote": true
+        },
+        {
+            "employeeId": "EMP-5505",
+            "fullName": "Aarav Patel",
+            "role": "Backend",
+            "seniority": "Senior",
+            "isRemote": false
+        },
+        {
+            "employeeId": "EMP-5506",
+            "fullName": "Chloe Dupont",
+            "role": "QA Engineer",
+            "seniority": "Mid",
+            "isRemote": true
+        },
+        {
+            "employeeId": "EMP-5507",
+            "fullName": "Liam O'Connor",
+            "role": "Frontend",
+            "seniority": "Junior",
+            "isRemote": false
+        },
+        {
+            "employeeId": "EMP-5508",
+            "fullName": "Naomi Tanaka",
+            "role": "Data Engineer",
+            "seniority": "Senior",
+            "isRemote": true
+        },
+        {
+            "employeeId": "EMP-5509",
+            "fullName": "Samuel Kwesi",
+            "role": "Backend",
+            "seniority": "Mid",
+            "isRemote": false
+        },
+        {
+            "employeeId": "EMP-5510",
+            "fullName": "Isabella Rossi",
+            "role": "Product Manager",
+            "seniority": "Senior",
+            "isRemote": false
+        }
+    ]
+}
