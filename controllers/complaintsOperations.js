@@ -1,6 +1,4 @@
 const jwt = require('jsonwebtoken');
-const complaints = require('../data/complaints.json');
-const profiles = require('../data/profile.json');
 const complaintModel = require('../models/complaintsSchema');
 const userProfileModel = require('../models/user_profileSchema');
 require('dotenv').config();

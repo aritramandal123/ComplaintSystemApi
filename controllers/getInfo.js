@@ -1,7 +1,4 @@
 const jwt = require('jsonwebtoken');
-const profile = require('../data/profile.json');
-const complaints = require('../data/complaints.json');
-const employees = require('../data/employee.json');
 const complaintModel = require('../models/complaintsSchema');
 const userProfileModel = require('../models/user_profileSchema');
 const adminProfileModel = require('../models/adminProfileSchema');

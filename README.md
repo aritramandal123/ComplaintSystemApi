@@ -59,7 +59,7 @@ ComplaintSystemApi/
 ## 🔌 API Documentation
 
 All API responses are in JSON format.
-**Base URL**: `http://localhost:8800`
+**Base URL**: `http://localhost:8800` as it is yet to be deployed
 
 ### 🔒 Authentication
 Authentication is handled via JWT. Upon successful login, you receive a `token`. This token must be included in the header of protected routes.
