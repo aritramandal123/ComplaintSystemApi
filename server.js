@@ -1,13 +1,12 @@
 const express = require('express');
-const fs = require('fs');
+
 const cors = require('cors');
 const loginRouter = require('./router/loginRouter');
 const getInfoRouter = require('./router/getInfoRouter');
 const complaintsRouter = require('./router/complaintsRouter');
 const connectDB = require('./config/db')
 
-const cred = JSON.parse(fs.readFileSync('data/cred.json', 'utf8'));
-const profile = JSON.parse(fs.readFileSync('data/profile.json', 'utf8'));
+
 
 connectDB();
 const app = express();
