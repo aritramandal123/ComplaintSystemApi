@@ -2,6 +2,7 @@ const express = require('express');
 
 const cors = require('cors');
 const loginRouter = require('./router/loginRouter');
+const registerRouter = require('./router/registerRouter');
 const getInfoRouter = require('./router/getInfoRouter');
 const complaintsRouter = require('./router/complaintsRouter');
 const connectDB = require('./config/db')
@@ -24,6 +25,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/login', loginRouter);
+
+app.use('/register', registerRouter);
 
 app.use('/getInfo', getInfoRouter);
 
