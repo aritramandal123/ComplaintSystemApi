@@ -46,7 +46,7 @@ const register = async (req, res) => {
     res.status(201).json({
         message: 'User registered successfully',
         token: token,
-        userId: newUserCred.email
+        userId: newUserCred._id
     });
 };
 
