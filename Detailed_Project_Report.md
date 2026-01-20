@@ -176,99 +176,82 @@ The database schema is designed to be efficient and scalable.
 The backend provides a set of RESTful endpoints.
 
 ### 8.1 Authentication Endpoints
-*   **POST** `/api/auth/login`
-    *   **Description:** Authenticates a user or admin.
+*   **POST** `/login/user`
+    *   **Description:** Authenticates a standard user.
     *   **Request Body:** `{ "email": "user@example.com", "password": "yourpassword" }`
-    *   **Response:** `{ "token": "jwt_string", "user": { ... } }`
-    *   **Status Codes:** 200 (OK), 401 (Unauthorized), 500 (Server Error).
+    *   **Response:** `{ "message": "Login successful", "token": "...", "id": "..." }`
 
-*   **POST** `/api/auth/register`
-    *   **Description:** Registers a new user account.
-    *   **Request Body:** `{ "name": "John", "email": "john@example.com", "password": "..." }`
-    *   **Response:** `{ "message": "User registered successfully" }`
+*   **POST** `/login/admin`
+    *   **Description:** Authenticates an administrator.
+    *   **Request Body:** `{ "email": "admin@example.com", "password": "yourpassword" }`
+    *   **Response:** `{ "message": "Login successful", "token": "...", "id": "..." }`
+    **POST** `/register/user`
+    *   **Description:** Registers a new user.
+    *   **Request Body:** `{ "name": "John", "email": "john@example.com","phone":"1234567890", "password": "..." }`
+    *   **Response:** `{ "message": "User registered successfully", "token": "...", "id": "..." }`
 
-### 8.2 Complaint Endpoints
-*   **GET** `/api/complaints`
-    *   **Description:** Fetches complaints. If User, returns *only theirs*. If Admin, returns *all*.
-    *   **Headers:** `Authorization: Bearer <token>`
-    *   **Response:** `[ { "title": "AC Broken", "status": "pending", ... }, ... ]`
+### 8.2 Complaint & Info Endpoints (Non-Standard REST)
+The system utilizes **POST** requests for most operations to securely pass identifiers in the body.
 
-*   **POST** `/api/complaints`
-    *   **Description:** Creates a new complaint.
-    *   **Request Body:** `{ "title": "...", "description": "...", "category": "..." }`
-    *   **Validation:** Title min-length 5 chars.
+**Complaint Operations:**
+*   **POST** `/complaints/user/submit`
+    *   **Description:** Lodge a new complaint.
+    *   **Request Body:** `{ "userId": "...", "title": "...", "description": "...", "category": "..." }`
 
-*   **PUT** `/api/complaints/:id`
-    *   **Description:** Updates complaint details (Admin Only).
-    *   **Request Body:** `{ "status": "resolved", "technician": "Dave" }`
+*   **POST** `/complaints/admin/update`
+    *   **Description:** Update status or assign technician.
+    *   **Request Body:** `{ "id": "complaintId", "status": "...", "technician": "..." }`
 
-*   **DELETE** `/api/complaints/:id`
-    *   **Description:** Soft deletes a complaint (Admin Only).
+**Data Retrieval:**
+*   **POST** `/getInfo/user/complaints`
+    *   **Description:** Fetch history for a specific user.
+    *   **Request Body:** `{ "id": "userId", "userType": "user" }`
+
+*   **POST** `/getInfo/admin/complaints`
+    *   **Description:** Fetch all complaints for the admin dashboard.
+    *   **Request Body:** `{ "id": "adminId" }`
+
+*   **POST** `/getInfo/userInfo`
+    *   **Description:** Fetch user profile details.
+    *   **Request Body:** `{ "id": "userId" }`
 
 ---
 
 ## 9. User Interface Design and Component Hierarchy
 
-The Frontend is built using a component-based architecture in React.
+The frontend is built using **Next.js 16** with a directory-based routing structure. Unlike traditional component-heavy architectures, this project utilizes **Monolithic Page Components** where the logic and UI for dashboards are encapsulated within the page files themselves to act as self-contained modules.
 
-### 9.1 Key Components
-*   **`Layout.js`**: Wraps the application. Contains the global `Navbar` and `Sidebar`.
-*   **`Navbar.js`**: Displays the logo and User Profile dropdown.
-*   **`ComplaintCard.js`**: A reusable card component to display individual complaint summaries (ID, Title, Badge).
-*   **`StatusBadge.js`**: A visual indicator component that changes color based on prop (Red=Pending, Yellow=In-Progress, Green=Resolved).
-*   **`Modal.js`**: A generic overlay for forms (e.g., "Add Complaint" popup).
+### 9.1 Key Modules (Page-Based Components)
+*   **`app/page.js` (Root)**: Handles entry-level redirection. It checks for authentication cookies and directs users to either the Landing page or their respective Dashboards (Admin/User).
+*   **`app/landing/page.js`**: The public landing page featuring dual-login portals ("Client Portal" vs "Administrator").
+*   **`app/user/home/page.js` (UserDashboard)**: A comprehensive single-file module containing:
+    *   **Sidebar**: Navigation for "New Ticket", "History", etc.
+    *   **Header**: User profile and status counters.
+    *   **Complaint Form**: A built-in validated form section for dispatching complaints.
+    *   **Activity Log**: A table view of the user's complaint history.
+    *   **Modal Overlay**: An internal simplified component for viewing detailed ticket info.
+*   **`app/admin/home/page.js` (AdminDashboard)**: A complex dashboard module featuring:
+    *   **Kanban Board**: Three-column layout (Pending, In-Progress, Resolved) implemented via internal `StatusColumn` functions.
+    *   **Inspection Modal**: A detailed detailed popup for managing ticket status and assigning technicians.
+    *   **Archive View**: A modal for viewing all historical complaints.
+    *   **Employee Database**: A lookup modal for assigning staff.
 
-### 9.2 State Management
-*   **Global State:** React Context API is used to store `AuthContext` (User info, Token).
-*   **Local State:** `useState` hooks manage form inputs and toggles.
-*   **Server State:** `SWR` or `React Query` (suggested) for caching API responses.
+### 9.2 Reusable Components
+*   **`components/LoadingScreen.js`**: A shared loading spinner used globally during auth checks and data fetching.
 
----
-
-## 10. Security and Performance Optimizations
-
-### 10.1 Security Measures
-1.  **Input Sanitization:** All incoming request bodies are validated (using libraries like Joi/Zod) to prevent Injection attacks.
-2.  **CORS Policy:** Cross-Origin Resource Sharing is restricted to trusted domains.
-3.  **Environment Variables:** Secrets (DB URI, JWT Key) are stored in `.env` and never committed to version control.
-4.  **Password Hashing:** Passwords are never stored in plain text.
-
-### 10.2 Performance Tuning
-1.  **Database Indexing:** Fields like `userId` and `status` are indexed in MongoDB for faster query performance.
-2.  **Code Splitting:** Next.js automatically splits code per page, ensuring fast initial load times.
-3.  **Lazy Loading:** Heavy components or images are lazy-loaded only when they enter the viewport.
+### 9.3 State Management
+*   **Local State (`useState`)**: Used extensively within the page modules to manage form inputs, modal visibility (`isModalOpen`), and data arrays (`complaints`, `employees`).
+*   **Effect Hooks (`useEffect`)**: Handles data fetching (`fetchuserInfo`, `getComplaints`) and manual cookie-based authentication checks.
+*   **Direct API Calls**: `fetch` is used directly within components rather than through a global store or service layer.
 
 ---
 
-## 11. Testing and Validation Strategies
+## 10. Conclusion and Future Scope
 
-To ensure the reliability of the system, a rigorous testing strategy is proposed.
-
-### 11.1 Unit Testing
-*   **Scope:** Individual functions and components.
-*   **Tools:** Jest, React Testing Library.
-*   **Focus:** Testing API controllers in isolation (mocking database calls) and testing UI components (e.g., ensuring a button click fires the correct event).
-
-### 11.2 Integration Testing
-*   **Scope:** Interaction between modules.
-*   **Focus:**
-    *   **Frontend-Backend Handshake:** verifying that the API data is correctly consumed and displayed by the React components.
-    *   **Database Integration:** verifying that data is correctly persisted to MongoDB and retrieved.
-
-### 11.3 System/Acceptance Testing
-*   **Scope:** The full application flow.
-*   **Focus:** End-to-End (E2E) scenarios.
-    *   *Scenario 1:* A user logs in, creates a complaint, and verifies it appears on the dashboard.
-    *   *Scenario 2:* An admin logs in, sees the new complaint, changes status to 'Resolved', and the user sees the update.
-
----
-
-## 12. Conclusion and Future Scope
-
-### 12.1 Conclusion
+### 10.1 Conclusion
 The development of the **Complaint Management System** represents a significant step forward in modernizing facility management operations. By effectively utilizing the MERN stack, the system offers a scalable, secure, and user-friendly solution that addresses the core inefficiencies of traditional manual processes. The separation of concerns between the client and server ensures that the application is maintainable and adaptable to future changes. The project successfully meets its primary objectives of automation, transparency, and accountability.
 
-### 12.2 Future Scope
+### 10.2 Future Scope
 While the current version covers the essential features, the system is designed to be extensible. Future enhancements could include:
 1.  **AI-Driven Insights:** Implementing Machine Learning models to predict asset failure based on complaint history frequency.
 2.  **Mobile Application:** Developing a dedicated React Native app for field technicians to update status on-the-go with push notifications.
@@ -278,7 +261,7 @@ While the current version covers the essential features, the system is designed 
 
 ---
 
-## 13. References
+## 11. References
 
 1.  **React Documentation:** https://react.dev
 2.  **Next.js Documentation:** https://nextjs.org/docs
